@@ -26,6 +26,15 @@ go get github.com/youmark/pkcs8
 go run generate_ca.go
 ```
 
+### Update the CA.pem file in each Node
+
+```
+CA: python3 -m http.server 8000
+
+Node: iwr -uri http://192.168.1.103:8000/CA.pem -Outfile .\CA.pem
+
+```
+
 ## Usage
 
 ### Baby-CA
