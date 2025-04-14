@@ -26,6 +26,9 @@ var (
 )
 
 func loadCAKeys() {
+
+	// fmt.Println(config.ListenAddr, config.ListenPort, config.ListenFlagPort, config.AllowedIPs, config.CaCertificatePath, config.CaPrivateKeyPath)
+
 	// Load CA private key
 	keyData, err := os.ReadFile(config.CaPrivateKeyPath)
 	if err != nil {
@@ -99,13 +102,14 @@ func generateCertificate(csr *x509.CertificateRequest) []byte {
 }
 
 func listenCSR() {
-	listener, err := net.Listen("tcp", fmt.Sprintf("%s:%d", config.ListenAddr, config.ListenPort))
+	addr := fmt.Sprintf("%s:%d", config.ListenAddr, config.ListenPort)
+	listener, err := net.Listen("tcp", addr)
 	if err != nil {
-		log.Fatalf("Failed to listen on port %d: %v", config.ListenPort, err)
+		log.Fatalf("Failed to listen on address %s: %v", addr, err)
 	}
-	defer listener.Close()
+	fmt.Println("Listening on", listener.Addr())
 
-	fmt.Println(listener)
+	defer listener.Close()
 
 	for {
 		conn, err := listener.Accept()
