@@ -14,10 +14,16 @@ The communication flow is identical to the Python version. The CA listens on por
 
 The logic is a bit modified, and the following commands are to be used now
 
-```
-openssl genpkey -algorithm RSA -out private_key.pem -pkeyopt rsa_keygen_bits:2048
+~~`
+openssl genpkey -algorithm RSA -out private_key.pem -pkeyopt rsa_keygen_bits:2048`~~
 
-openssl req -new -x509 -key private_key.pem -out certificate.pem -days 365
+~~`openssl req -new -x509 -key private_key.pem -out certificate.pem -days 365 -passout pass:isi@jhu!2023
+`~~
+
+```
+go get github.com/youmark/pkcs8
+
+go run generate_ca.go
 ```
 
 ## Usage

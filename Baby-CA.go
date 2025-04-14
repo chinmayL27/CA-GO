@@ -16,6 +16,7 @@ import (
 	"sync"
 	"time"
 	"CA-GO/config"
+	"github.com/youmark/pkcs8"
 )
 
 var (
@@ -38,13 +39,13 @@ func loadCAKeys() {
 
 	// fmt.Println(block.Type)
 	
-	if block == nil || block.Type != "PRIVATE KEY" {
+	if block == nil || block.Type != "ENCRYPTED PRIVATE KEY" {
 		log.Fatalf("Failed to decode CA private key")
 	}
 
-	caPrivateKeyParsed, err := x509.ParsePKCS8PrivateKey(block.Bytes)
+	caPrivateKeyParsed, err := pkcs8.ParsePKCS8PrivateKey(block.Bytes, []byte(config.CaPrivateKeyPass))
 	if err != nil {
-		log.Fatalf("Failed to parse CA private key: %v", err)
+		log.Fatalf("Failed to parse encrypted CA private key: %v", err)
 	}
 
 	var ok = bool(false)
